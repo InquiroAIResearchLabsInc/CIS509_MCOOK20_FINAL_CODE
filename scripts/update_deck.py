@@ -291,6 +291,10 @@ def update_slide_8(slide) -> None:
     """
     # Pull the actual top-1 from the live data for the speaker notes example
     top10 = pd.read_csv(TOP10_PATH).head(10)
+    # If no data (e.g., sample too small), skip the text updates but keep structure
+    if len(top10) == 0:
+        return
+
     leader = top10.iloc[0]
 
     set_text_lines(slide.shapes[2], [
