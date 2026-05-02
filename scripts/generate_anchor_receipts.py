@@ -30,7 +30,7 @@ from src.config import (
     MIN_REVIEWS_PER_BUSINESS,
     RECEIPTS_DIR,
 )
-from src.data_loader import filter_valid_businesses, load_reviews
+from src.data_loader import load_reviews
 from src.receipts import (
     build_receipt,
     sign_receipt,
@@ -103,7 +103,7 @@ def pick_anchor_businesses(df: pd.DataFrame, k: int) -> list[str]:
 
 
 def main() -> int:
-    df = filter_valid_businesses(load_reviews())
+    df = load_reviews(clean=True)
     vader = SentimentIntensityAnalyzer()
 
     business_ids = pick_anchor_businesses(df, ANCHOR_RECEIPT_COUNT)

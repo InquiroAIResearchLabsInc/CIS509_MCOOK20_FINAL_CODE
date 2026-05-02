@@ -22,14 +22,14 @@ What already exists from prior CIS 509 assignments, mapped to where it lands in 
 | LA4 | Complete | GRU and LSTM with GloVe embeddings | LSTM trainable embeddings 95.15%, GRU frozen 94.10% | Cite as deep-learning baseline in README |
 | LA5 | Complete | BERTopic, 80 topics auto-discovered, reduced to 15 | 15 interpretable topic clusters | Source for `notebooks/03_bertopic.ipynb`, regenerate locally because Colab embeddings are not portable |
 | LA6 | Complete | LLM zero-shot, few-shot, multi-model agreement on 40-review subset | Few-shot beats zero-shot, Llama-3.3 and DeepSeek comparable | Source for `notebooks/04_llm_methods.ipynb`. `LA6_predictions.csv` is reused as cached output so the pipeline runs without a Groq key |
-| ProjectEDA | Complete | Six-plot EDA dashboard, VADER divergence in Section 7 | 28.3% high-divergence reviews | Source for `notebooks/01_eda.ipynb` and the divergence calculation in `notebooks/02_vader_sentiment.ipynb` |
+| ProjectEDA | Complete | Six-plot EDA dashboard, VADER divergence in Section 7 | 10.4% high-divergence reviews (5,002 of 48,147) | Source for `notebooks/01_eda.ipynb` and the divergence calculation in `notebooks/02_vader_sentiment.ipynb` |
 
 ## Reuse plan, by destination notebook
 
 **`notebooks/01_eda.ipynb`** ← ProjectEDA Sections 1 to 6
 - Six plots: review volume distribution, review length distribution, reviews over time, business volume distribution, VADER sentiment by star, sentiment-star divergence histogram
 - Replace Colab paths with `data/restaurant_reviews_az.csv`
-- Confirm the 28.3% figure recomputes from the actual CSV
+- Confirm the 10.3% figure recomputes from the actual CSV (notebook 02 produces 10.25% on the current CSV; ProjectEDA computed 10.4% on its run)
 
 **`notebooks/02_vader_sentiment.ipynb`** ← ProjectEDA Section 7
 - VADER compound score per review

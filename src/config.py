@@ -28,9 +28,16 @@ DATASET_COLUMNS: list[str] = [
     "stars", "useful", "funny", "cool",
     "text", "date",
 ]
-# Upstream Excel corruption produced 499 rows where business_id="#NAME?" from
-# IDs that started with "=" or similar. We drop these at aggregation time.
-INVALID_BUSINESS_IDS: tuple[str, ...] = ("#NAME?",)
+# Upstream Excel corruption produced rows where business_id or review_id was
+# evaluated as a formula and replaced with the "#NAME?" error string. The
+# corruption hit both columns independently:
+#   - 499 rows have business_id == "#NAME?"
+#   - 618 rows have review_id == "#NAME?"
+# We drop any row where either column matches an invalid token.
+INVALID_IDS: tuple[str, ...] = ("#NAME?",)
+# After cleaning, the dataset has fewer rows. This is the new invariant for
+# clean=True loads. Smoke tests exercise both the raw and cleaned counts.
+EXPECTED_CLEAN_ROW_COUNT: int = 47_035  # measured 2026-05-02
 
 # TABHS parameters
 DIVERGENCE_THRESHOLD: float = 1.0      # |normalized_stars - normalized_vader| > 1.0 → suspicious

@@ -2,9 +2,9 @@
   "schema_version": "tabhs-v1.0",
   "tenant_id": "cis509-mcook20",
   "business_id": "WSx9-iYYyST_umny9sJBFg",
-  "computed_at": "2026-05-02T17:46:26.033932Z",
+  "computed_at": "2026-05-02T18:03:35.542277Z",
   "input": {
-    "review_count": 346,
+    "review_count": 336,
     "date_range": [
       "2020-01-02",
       "2022-01-18"
@@ -12,16 +12,16 @@
     "data_source": "yelp_open_dataset_arizona_restaurants_subset"
   },
   "scores": {
-    "raw_yelp_rating": 4.419,
-    "tabhs_adjusted_rating": 4.491,
-    "manipulation_delta": -0.072,
-    "suspicious_review_pct": 2.89
+    "raw_yelp_rating": 4.423,
+    "tabhs_adjusted_rating": 4.499,
+    "manipulation_delta": -0.076,
+    "suspicious_review_pct": 2.98
   },
   "evidence": {
-    "vader_mean_divergence": 0.24202369942196533,
-    "topic_outlier_pct": null,
+    "vader_mean_divergence": 0.2404,
+    "topic_outlier_pct": 1.0,
     "llm_few_shot_agreement_rate": null,
-    "xgboost_mean_suspicion_score": 0.028901734104046242
+    "xgboost_mean_suspicion_score": 0.0304
   },
   "models": {
     "sentiment": {
@@ -43,11 +43,10 @@
     "Classifier circularity, divergence score is both an input feature and a component of the proxy label.",
     "Geographic scope limited to Arizona restaurants. Findings may not generalize.",
     "Pre-COVID and post-COVID dynamics are mixed in the corpus.",
-    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used.",
-    "Anchor receipt, generated before full pipeline run. evidence.topic_outlier_pct, evidence.llm_few_shot_agreement_rate, and evidence.xgboost_mean_suspicion_score are provisional. Re-running run_pipeline.py replaces this receipt with the full-pipeline result."
+    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used."
   ],
   "dual_hash": {
-    "sha256": "79b9d241de1564a39261391e1d9ceb21ae18a481da2498f8b5bccfda68cbf943",
-    "blake3": "d3df7a3db294e1603111a7a01d93dd091144e052bf0ede9ca4a3ad0a1754e750"
+    "sha256": "d4a1be3f2f9d2286b35b23bf4bdecb3abbda6595a284fd69a1d754e102f182d1",
+    "blake3": "58ff6068cd96b82c09310a8c8d01c00a3af814236e997d07793a2377002dd0ee"
   }
 }

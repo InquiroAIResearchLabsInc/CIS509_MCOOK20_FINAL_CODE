@@ -2,9 +2,9 @@
   "schema_version": "tabhs-v1.0",
   "tenant_id": "cis509-mcook20",
   "business_id": "DVBJRvnCpkqaYl6nHroaMg",
-  "computed_at": "2026-05-02T17:46:26.366598Z",
+  "computed_at": "2026-05-02T18:03:35.547340Z",
   "input": {
-    "review_count": 285,
+    "review_count": 282,
     "date_range": [
       "2020-01-02",
       "2022-01-19"
@@ -12,16 +12,16 @@
     "data_source": "yelp_open_dataset_arizona_restaurants_subset"
   },
   "scores": {
-    "raw_yelp_rating": 4.884,
-    "tabhs_adjusted_rating": 4.883,
+    "raw_yelp_rating": 4.883,
+    "tabhs_adjusted_rating": 4.882,
     "manipulation_delta": 0.001,
-    "suspicious_review_pct": 0.7
+    "suspicious_review_pct": 0.71
   },
   "evidence": {
-    "vader_mean_divergence": 0.14632,
-    "topic_outlier_pct": null,
+    "vader_mean_divergence": 0.1475,
+    "topic_outlier_pct": 1.0,
     "llm_few_shot_agreement_rate": null,
-    "xgboost_mean_suspicion_score": 0.007017543859649123
+    "xgboost_mean_suspicion_score": 0.0072
   },
   "models": {
     "sentiment": {
@@ -43,11 +43,10 @@
     "Classifier circularity, divergence score is both an input feature and a component of the proxy label.",
     "Geographic scope limited to Arizona restaurants. Findings may not generalize.",
     "Pre-COVID and post-COVID dynamics are mixed in the corpus.",
-    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used.",
-    "Anchor receipt, generated before full pipeline run. evidence.topic_outlier_pct, evidence.llm_few_shot_agreement_rate, and evidence.xgboost_mean_suspicion_score are provisional. Re-running run_pipeline.py replaces this receipt with the full-pipeline result."
+    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used."
   ],
   "dual_hash": {
-    "sha256": "90163f2fd406acb9ecd9674c7286866e898d3b11f89820751f5450e6af319b70",
-    "blake3": "48437d95a1a682c529ebebf9dbbbdb9a020363ed61e41b114964e097a778c0be"
+    "sha256": "8f282672812257ed44f152d56bdf28ad3e4eb28eaa60fa182bafeaab9a601fad",
+    "blake3": "17f95ac0e68f85ef9d4fd58bd3f79cbeff90174570b6efe32f36a97671fbf77f"
   }
 }

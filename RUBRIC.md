@@ -6,8 +6,8 @@ CIS 509 final project rubric, six categories. This document maps each category t
 
 | Category | Weight | Excellent band, 9 to 10 | How this repo delivers |
 |---|---|---|---|
-| Business Problem | 15% | Clearly defined, data-driven, strong justification | TABHS thesis stated in README and PROJECT_BRIEF, 28.3% headline finding visible without scrolling, framed as audit trail not fraud detection |
-| EDA | 10% | Thorough, insightful, clear visualizations | `notebooks/01_eda.ipynb`, six committed plots, summary stats, divergence histogram showing the 28.3% population |
+| Business Problem | 15% | Clearly defined, data-driven, strong justification | TABHS thesis stated in README and PROJECT_BRIEF, 10.3% headline finding visible without scrolling, framed as audit trail not fraud detection |
+| EDA | 10% | Thorough, insightful, clear visualizations | `notebooks/01_eda.ipynb`, six committed plots, summary stats, divergence histogram showing the 10.3% population |
 | NLP Methodology | 25% | Advanced and well-justified methods aligned to the problem | Three methods stacked: VADER lexicon, BERTopic 80 to 15 topics, LLM zero-shot plus few-shot plus multi-model agreement. Each justified in its own notebook header |
 | Results and Insights | 25% | Insightful, well-explained, clear business connection | Per-business TABHS receipts with manipulation delta, Top 10 manipulated businesses table, static HTML dashboard, manipulation-delta bar chart |
 | Presentation | 10% | Well-structured, visually engaging | ASU maroon and gold theme on the dashboard, `slides/TABHS_CLEAN.pptx` deck, README with hero header and Codespaces button |
@@ -15,9 +15,9 @@ CIS 509 final project rubric, six categories. This document maps each category t
 
 ## Excellent-band evidence per category
 
-**Business Problem.** The README opens with the problem statement, the dataset, and the 28.3% finding before any setup instructions. The framing is forensic, not predictive. The receipt is positioned as court-admissible evidence of what was decided, not as a real-time fraud signal.
+**Business Problem.** The README opens with the problem statement, the dataset, and the 10.3% finding before any setup instructions. The framing is forensic, not predictive. The receipt is positioned as court-admissible evidence of what was decided, not as a real-time fraud signal.
 
-**EDA.** Six plots covering review-volume distribution, length distribution, time series, business distribution, VADER sentiment by star rating, and sentiment-star divergence histogram. The 28.3% figure is computed live in the notebook from the actual CSV.
+**EDA.** Six plots covering review-volume distribution, length distribution, time series, business distribution, VADER sentiment by star rating, and sentiment-star divergence histogram. The 10.3% figure is computed live in the notebook from the actual CSV.
 
 **NLP Methodology.** VADER provides the lexicon baseline. BERTopic provides unsupervised topic discovery, with the 80-to-15 reduction motivated explicitly in the notebook. The LLM section runs three protocols on a sampled subset: zero-shot for cold classification, few-shot for primed classification, multi-model agreement using Llama-3.3-70B and a comparator. Each method has a markdown header explaining why that method, why now, and what it contributes to the TABHS feature set.
 

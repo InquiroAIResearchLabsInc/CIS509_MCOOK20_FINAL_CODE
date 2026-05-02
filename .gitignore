@@ -60,6 +60,12 @@ models/cache/
 outputs/_tmp/
 *.log
 
+# Large regeneratable pipeline outputs. Receipts, figures, and the
+# top-10 CSV stay committed because they are dashboard inputs.
+outputs/vader_scores.csv
+outputs/topic_assignments.csv
+outputs/llm_agreement.csv
+
 # Coverage
 .coverage
 htmlcov/

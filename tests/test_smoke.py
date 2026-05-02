@@ -34,6 +34,17 @@ def test_data_loader_returns_expected_row_count() -> None:
     )
 
 
+def test_data_loader_clean_row_count() -> None:
+    from src.data_loader import load_reviews
+    df = load_reviews(strict=True, clean=True)
+    assert len(df) == config.EXPECTED_CLEAN_ROW_COUNT, (
+        f"Clean count expected {config.EXPECTED_CLEAN_ROW_COUNT}, got {len(df)}"
+    )
+    # No "#NAME?" tokens survive cleaning
+    assert "#NAME?" not in df["review_id"].unique()
+    assert "#NAME?" not in df["business_id"].unique()
+
+
 def test_data_loader_business_count() -> None:
     from src.data_loader import load_reviews
     df = load_reviews()

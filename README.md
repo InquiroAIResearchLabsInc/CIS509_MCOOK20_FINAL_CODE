@@ -10,9 +10,9 @@
   <text x="1140" y="100" text-anchor="end" font-family="system-ui, sans-serif" font-size="12" fill="#FFFFFF">Receipts-native NLP, Spring 2026</text>
 </svg>
 
-### **28.3% of Arizona restaurant reviews show sentiment that does not match their star rating.**
+### **10.3% of Arizona restaurant reviews show sentiment that does not match their star rating** (4,838 of 47,035 cleaned reviews, divergence > 1.0).
 
-Built on 48,147 reviews across 1,864 restaurants. Every business analyzed produces a JSON receipt signed with SHA-256 plus BLAKE3.
+Built on 48,147 raw rows, 47,035 after dropping Excel-corrupted IDs, across 1,864 restaurants. Every business analyzed produces a JSON receipt signed with SHA-256 plus BLAKE3.
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/InquiroAIResearchLabsInc/CIS509_MCOOK20_FINAL_CODE)
 
@@ -69,7 +69,7 @@ tabhs/
 ├── .github/workflows/              CI on push, weekly refresh of top 10
 ├── data/restaurant_reviews_az.csv  the dataset, 48,147 reviews
 ├── notebooks/
-│   ├── 01_eda.ipynb                EDA, six plots, 28.3% finding
+│   ├── 01_eda.ipynb                EDA, six plots, 10.3% finding
 │   ├── 02_vader_sentiment.ipynb    VADER divergence
 │   ├── 03_bertopic.ipynb           BERTopic 80 to 15
 │   ├── 04_llm_methods.ipynb        Groq zero/few/multi-model

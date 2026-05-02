@@ -2,7 +2,7 @@
   "schema_version": "tabhs-v1.0",
   "tenant_id": "cis509-mcook20",
   "business_id": "OMnPtRGmbY8qH_wIILfYKA",
-  "computed_at": "2026-05-02T17:46:26.541880Z",
+  "computed_at": "2026-05-02T18:03:35.548700Z",
   "input": {
     "review_count": 263,
     "date_range": [
@@ -13,15 +13,15 @@
   },
   "scores": {
     "raw_yelp_rating": 4.532,
-    "tabhs_adjusted_rating": 4.644,
-    "manipulation_delta": -0.112,
-    "suspicious_review_pct": 3.8
+    "tabhs_adjusted_rating": 4.635,
+    "manipulation_delta": -0.102,
+    "suspicious_review_pct": 3.42
   },
   "evidence": {
-    "vader_mean_divergence": 0.20055817490494296,
-    "topic_outlier_pct": null,
+    "vader_mean_divergence": 0.2006,
+    "topic_outlier_pct": 1.0,
     "llm_few_shot_agreement_rate": null,
-    "xgboost_mean_suspicion_score": 0.03802281368821293
+    "xgboost_mean_suspicion_score": 0.0355
   },
   "models": {
     "sentiment": {
@@ -43,11 +43,10 @@
     "Classifier circularity, divergence score is both an input feature and a component of the proxy label.",
     "Geographic scope limited to Arizona restaurants. Findings may not generalize.",
     "Pre-COVID and post-COVID dynamics are mixed in the corpus.",
-    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used.",
-    "Anchor receipt, generated before full pipeline run. evidence.topic_outlier_pct, evidence.llm_few_shot_agreement_rate, and evidence.xgboost_mean_suspicion_score are provisional. Re-running run_pipeline.py replaces this receipt with the full-pipeline result."
+    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used."
   ],
   "dual_hash": {
-    "sha256": "d07b421d90699e878e1b797dd092da1225e6c954a279e4edae7d66ba8c4856b3",
-    "blake3": "08afcdc4288a245a669b55f9dd3be1af657c30bb8f71d44ecfe68b1ce51fc653"
+    "sha256": "d8818162a3088b91cbc9dddb34f7a26bb268d294fc2ada4455fdf7d6eef948a9",
+    "blake3": "563ad98309fa5704c5df57bd340b006eef118157aef46c3e3c461e045e10cd58"
   }
 }

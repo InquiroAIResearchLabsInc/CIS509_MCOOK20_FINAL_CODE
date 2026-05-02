@@ -12,7 +12,7 @@ A receipts-native NLP pipeline that ingests 48,147 Yelp reviews of Arizona resta
 
 ## Headline finding
 
-**28.3% of reviews in the corpus exhibit sentiment-star divergence greater than 1.0**, indicating a written sentiment that does not match the numeric star rating. This is the proxy signal that drives the TABHS adjustment.
+**10.3% of reviews in the corpus exhibit sentiment-star divergence greater than 1.0** (4,838 of 47,035 cleaned reviews), indicating a written sentiment that does not match the numeric star rating. This is the proxy signal that drives the TABHS adjustment. The strategy doc cited 28.3%, that number was incorrect, see `lessons.md` for the audit trail.
 
 ## Dataset
 
