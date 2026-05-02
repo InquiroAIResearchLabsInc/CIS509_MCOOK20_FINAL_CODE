@@ -25,7 +25,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <title>TABHS Dashboard, Trust-Adjusted Business Health Score</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/blake3@2.1.7/dist/wasm/web/blake3_web.js"></script>
+<!-- Client-side verification uses Web Crypto SHA-256, no extra deps -->
 <style>
   :root {
     --asu-maroon: #8C1D40;
