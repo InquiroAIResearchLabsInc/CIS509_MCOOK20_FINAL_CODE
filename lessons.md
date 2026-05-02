@@ -2,7 +2,7 @@
 
 Per CLAUDEME §12, every correction lands here before continuing. Append-only.
 
-## 2026-05-02 — Headline finding correction, 28.3% → 10.3%
+## 2026-05-02, headline finding correction, 28.3% to 10.3%
 
 **Where the number came from:** `Tabhs cis509 build strategy.md` line 14 ("28.3% of Arizona restaurant reviews flagged as inauthentic") and line 16 ("the top 10 most-manipulated Arizona restaurants").
 
@@ -31,7 +31,7 @@ print(f'{100 * (df.sentiment_star_divergence > 1.0).mean():.2f}%')
 # Output: 10.25%
 ```
 
-## 2026-05-02 — Excel `#NAME?` corruption hit BOTH columns
+## 2026-05-02, Excel `#NAME?` corruption hit BOTH columns
 
 **What was found:** the source CSV has Excel-evaluation corruption in two
 independent columns:
