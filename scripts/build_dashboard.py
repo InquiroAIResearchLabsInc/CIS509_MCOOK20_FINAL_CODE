@@ -51,6 +51,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     background: var(--bg-mid);
     border: 1px solid #30363D;
     border-radius: 6px;
+    text-align: center;
   }
   .row-hover:hover { background: #21262D; cursor: pointer; }
   .row-active {
@@ -74,6 +75,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .delta-neg { color: var(--text-mute); }
   table thead { background: var(--bg-mid); }
   table tbody tr { border-bottom: 1px solid #21262D; }
+  table th, table td { text-align: center !important; }
 </style>
 </head>
 <body>
