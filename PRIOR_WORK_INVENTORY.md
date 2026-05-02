@@ -1,6 +1,6 @@
 # PRIOR_WORK_INVENTORY
 
-What already exists from prior CIS 509 assignments, mapped to where it lands in this build. Source notebooks live at the repo root and were carried over from Bubba's Colab Drive.
+What already exists from prior CIS 509 assignments, mapped to where it lands in this build. Source notebooks live in `notebooks/_prior_work/` and were carried over from Bubba's Colab Drive. They are reference artifacts, not active pipeline inputs. The pipeline reads the CSV directly and rebuilds outputs deterministically.
 
 ## Dataset facts, confirmed by `python3 csv` count
 
@@ -54,7 +54,7 @@ What already exists from prior CIS 509 assignments, mapped to where it lands in 
 
 ## Skip list
 
-LA1 and LA3 are not used in the pipeline. LA1 is qualitative-only, no portable output. LA3 is a neural-network math exercise unrelated to the project domain. They remain at the repo root as historical artifacts but are not referenced by the pipeline.
+LA1 and LA3 are not used in the pipeline. LA1 is qualitative-only, no portable output. LA3 is a neural-network math exercise unrelated to the project domain. They live in `notebooks/_prior_work/` as historical artifacts but are not referenced by the pipeline.
 
 ## Portable artifacts ready to use as-is
 
