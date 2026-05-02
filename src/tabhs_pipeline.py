@@ -390,6 +390,14 @@ def run_pipeline(
     except Exception as e:
         print(f"[8/7] dashboard rebuild skipped: {e}")
 
+    # Update presentation deck to match the live pipeline
+    try:
+        from scripts.update_deck import main as update_deck_main
+        update_deck_main()
+        print(f"[9/7] presentation deck updated with live data")
+    except Exception as e:
+        print(f"[9/7] deck update skipped: {e}")
+
     elapsed = time.time() - t0
     return PipelineResult(
         n_reviews=len(df),
