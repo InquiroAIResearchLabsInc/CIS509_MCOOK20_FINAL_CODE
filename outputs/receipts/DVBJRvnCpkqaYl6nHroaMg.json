@@ -1,0 +1,53 @@
+{
+  "schema_version": "tabhs-v1.0",
+  "tenant_id": "cis509-mcook20",
+  "business_id": "DVBJRvnCpkqaYl6nHroaMg",
+  "computed_at": "2026-05-02T17:46:26.366598Z",
+  "input": {
+    "review_count": 285,
+    "date_range": [
+      "2020-01-02",
+      "2022-01-19"
+    ],
+    "data_source": "yelp_open_dataset_arizona_restaurants_subset"
+  },
+  "scores": {
+    "raw_yelp_rating": 4.884,
+    "tabhs_adjusted_rating": 4.883,
+    "manipulation_delta": 0.001,
+    "suspicious_review_pct": 0.7
+  },
+  "evidence": {
+    "vader_mean_divergence": 0.14632,
+    "topic_outlier_pct": null,
+    "llm_few_shot_agreement_rate": null,
+    "xgboost_mean_suspicion_score": 0.007017543859649123
+  },
+  "models": {
+    "sentiment": {
+      "name": "VADER + Llama-3.3-70B-Versatile (few-shot)",
+      "version": "vader-3.3.2 + groq-llama-3.3-70b"
+    },
+    "topic": {
+      "name": "BERTopic + all-MiniLM-L6-v2",
+      "version": "bertopic-0.16.4 + sbert-2.7"
+    },
+    "classifier": {
+      "name": "XGBoost binary",
+      "version": "xgboost-2.1.2",
+      "label_proxy": "sentiment_star_divergence > 1.0"
+    }
+  },
+  "limitations": [
+    "Suspicion labels are a heuristic proxy. No ground truth fake review labels exist in the Yelp Open Dataset.",
+    "Classifier circularity, divergence score is both an input feature and a component of the proxy label.",
+    "Geographic scope limited to Arizona restaurants. Findings may not generalize.",
+    "Pre-COVID and post-COVID dynamics are mixed in the corpus.",
+    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used.",
+    "Anchor receipt, generated before full pipeline run. evidence.topic_outlier_pct, evidence.llm_few_shot_agreement_rate, and evidence.xgboost_mean_suspicion_score are provisional. Re-running run_pipeline.py replaces this receipt with the full-pipeline result."
+  ],
+  "dual_hash": {
+    "sha256": "90163f2fd406acb9ecd9674c7286866e898d3b11f89820751f5450e6af319b70",
+    "blake3": "48437d95a1a682c529ebebf9dbbbdb9a020363ed61e41b114964e097a778c0be"
+  }
+}

@@ -9,7 +9,7 @@ What already exists from prior CIS 509 assignments, mapped to where it lands in 
 | Rows | 48,147 | Stable across LA1, LA2, LA4, LA5, ProjectEDA |
 | Businesses | 1,864 | |
 | Users | 22,435 | |
-| Date range | 2020-01-01 to 2021-09-09 | The original strategy doc said 2022-01-19, that was incorrect, actual end-date is 2021-09-09 |
+| Date range | 2020-01-01 to 2022-01-19 | Confirmed via chronological parse, matches the strategy doc |
 | Columns | `review_id, user_id, business_id, stars, useful, funny, cool, text, date` | The strategy doc referenced `useful_votes`, `funny_votes`, `cool_votes`, the actual columns drop the `_votes` suffix. Notebook 5 cell 2 maps accordingly |
 
 ## Asset table

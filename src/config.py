@@ -28,6 +28,9 @@ DATASET_COLUMNS: list[str] = [
     "stars", "useful", "funny", "cool",
     "text", "date",
 ]
+# Upstream Excel corruption produced 499 rows where business_id="#NAME?" from
+# IDs that started with "=" or similar. We drop these at aggregation time.
+INVALID_BUSINESS_IDS: tuple[str, ...] = ("#NAME?",)
 
 # TABHS parameters
 DIVERGENCE_THRESHOLD: float = 1.0      # |normalized_stars - normalized_vader| > 1.0 → suspicious
@@ -40,11 +43,12 @@ BERTOPIC_NUM_TOPICS_RAW: int = 80
 BERTOPIC_NUM_TOPICS_REDUCED: int = 15
 BERTOPIC_EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
 
-# LLM, Groq
+# LLM, Groq. LA6 used llama as primary and openai/gpt-oss-120b as comparator.
 LLM_MODEL_PRIMARY: str = "llama-3.3-70b-versatile"
-LLM_MODEL_COMPARATOR: str = "deepseek-r1-distill-llama-70b"
+LLM_MODEL_COMPARATOR: str = "openai/gpt-oss-120b"
 LLM_RATE_LIMIT_SLEEP_SEC: float = 0.5
 LLM_CACHE_PATH: Path = OUTPUTS_DIR / "llm_agreement.csv"
+LLM_SUBSET_SIZE: int = 40  # number of reviews to score live, matches LA6 sample size
 
 # Receipt schema
 SCHEMA_VERSION: str = "tabhs-v1.0"
@@ -73,7 +77,7 @@ XGBOOST_PARAMS: dict = {
 MODEL_VERSIONS: dict = {
     "vader": "vader-3.3.2",
     "groq_primary": "groq-llama-3.3-70b",
-    "groq_comparator": "groq-deepseek-r1-distill-llama-70b",
+    "groq_comparator": "groq-openai-gpt-oss-120b",
     "bertopic": "bertopic-0.16.4",
     "sbert": "sbert-2.7",
     "xgboost": "xgboost-2.1.2",

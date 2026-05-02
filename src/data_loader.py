@@ -17,6 +17,7 @@ from src.config import (
     DATASET_PATH,
     DATASET_COLUMNS,
     EXPECTED_ROW_COUNT,
+    INVALID_BUSINESS_IDS,
     TENANT_ID,
 )
 
@@ -91,6 +92,15 @@ def sample_reviews(n: int, *, random_state: int = 42) -> pd.DataFrame:
     if n >= len(df):
         return df
     return df.sample(n=n, random_state=random_state).reset_index(drop=True)
+
+
+def filter_valid_businesses(df: pd.DataFrame) -> pd.DataFrame:
+    """Drop rows whose business_id is on the invalid list (Excel corruption).
+
+    Always called before per-business aggregation. Preserves row count for
+    review-level analysis, only filters at the business-grouping step.
+    """
+    return df[~df["business_id"].isin(INVALID_BUSINESS_IDS)].copy()
 
 
 if __name__ == "__main__":

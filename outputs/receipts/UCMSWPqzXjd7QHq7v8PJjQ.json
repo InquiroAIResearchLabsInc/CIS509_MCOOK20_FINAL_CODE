@@ -1,0 +1,53 @@
+{
+  "schema_version": "tabhs-v1.0",
+  "tenant_id": "cis509-mcook20",
+  "business_id": "UCMSWPqzXjd7QHq7v8PJjQ",
+  "computed_at": "2026-05-02T17:46:26.234229Z",
+  "input": {
+    "review_count": 332,
+    "date_range": [
+      "2020-01-01",
+      "2022-01-18"
+    ],
+    "data_source": "yelp_open_dataset_arizona_restaurants_subset"
+  },
+  "scores": {
+    "raw_yelp_rating": 4.253,
+    "tabhs_adjusted_rating": 4.466,
+    "manipulation_delta": -0.213,
+    "suspicious_review_pct": 6.93
+  },
+  "evidence": {
+    "vader_mean_divergence": 0.2887888554216868,
+    "topic_outlier_pct": null,
+    "llm_few_shot_agreement_rate": null,
+    "xgboost_mean_suspicion_score": 0.06927710843373494
+  },
+  "models": {
+    "sentiment": {
+      "name": "VADER + Llama-3.3-70B-Versatile (few-shot)",
+      "version": "vader-3.3.2 + groq-llama-3.3-70b"
+    },
+    "topic": {
+      "name": "BERTopic + all-MiniLM-L6-v2",
+      "version": "bertopic-0.16.4 + sbert-2.7"
+    },
+    "classifier": {
+      "name": "XGBoost binary",
+      "version": "xgboost-2.1.2",
+      "label_proxy": "sentiment_star_divergence > 1.0"
+    }
+  },
+  "limitations": [
+    "Suspicion labels are a heuristic proxy. No ground truth fake review labels exist in the Yelp Open Dataset.",
+    "Classifier circularity, divergence score is both an input feature and a component of the proxy label.",
+    "Geographic scope limited to Arizona restaurants. Findings may not generalize.",
+    "Pre-COVID and post-COVID dynamics are mixed in the corpus.",
+    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used.",
+    "Anchor receipt, generated before full pipeline run. evidence.topic_outlier_pct, evidence.llm_few_shot_agreement_rate, and evidence.xgboost_mean_suspicion_score are provisional. Re-running run_pipeline.py replaces this receipt with the full-pipeline result."
+  ],
+  "dual_hash": {
+    "sha256": "c13d64460747282450cc27261cf0764a0c4b6c65451b244979bf3252cb0c9ce7",
+    "blake3": "668a5c7cb3edd682e8353e81eef2b4f390b505179a97761e6eeb7f8e12be9d6f"
+  }
+}

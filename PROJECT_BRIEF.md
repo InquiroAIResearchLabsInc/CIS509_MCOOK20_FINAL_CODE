@@ -22,7 +22,7 @@ A receipts-native NLP pipeline that ingests 48,147 Yelp reviews of Arizona resta
 | Rows | 48,147 reviews |
 | Businesses | 1,864 |
 | Users | 22,435 |
-| Date range | 2020-01-01 to 2021-09-09 |
+| Date range | 2020-01-01 to 2022-01-19 |
 | Source | Yelp Open Dataset, Arizona restaurants subset |
 | Columns | `review_id, user_id, business_id, stars, useful, funny, cool, text, date` |
 

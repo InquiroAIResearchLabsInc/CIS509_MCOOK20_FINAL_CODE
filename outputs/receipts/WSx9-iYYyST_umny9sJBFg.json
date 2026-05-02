@@ -1,0 +1,53 @@
+{
+  "schema_version": "tabhs-v1.0",
+  "tenant_id": "cis509-mcook20",
+  "business_id": "WSx9-iYYyST_umny9sJBFg",
+  "computed_at": "2026-05-02T17:46:26.033932Z",
+  "input": {
+    "review_count": 346,
+    "date_range": [
+      "2020-01-02",
+      "2022-01-18"
+    ],
+    "data_source": "yelp_open_dataset_arizona_restaurants_subset"
+  },
+  "scores": {
+    "raw_yelp_rating": 4.419,
+    "tabhs_adjusted_rating": 4.491,
+    "manipulation_delta": -0.072,
+    "suspicious_review_pct": 2.89
+  },
+  "evidence": {
+    "vader_mean_divergence": 0.24202369942196533,
+    "topic_outlier_pct": null,
+    "llm_few_shot_agreement_rate": null,
+    "xgboost_mean_suspicion_score": 0.028901734104046242
+  },
+  "models": {
+    "sentiment": {
+      "name": "VADER + Llama-3.3-70B-Versatile (few-shot)",
+      "version": "vader-3.3.2 + groq-llama-3.3-70b"
+    },
+    "topic": {
+      "name": "BERTopic + all-MiniLM-L6-v2",
+      "version": "bertopic-0.16.4 + sbert-2.7"
+    },
+    "classifier": {
+      "name": "XGBoost binary",
+      "version": "xgboost-2.1.2",
+      "label_proxy": "sentiment_star_divergence > 1.0"
+    }
+  },
+  "limitations": [
+    "Suspicion labels are a heuristic proxy. No ground truth fake review labels exist in the Yelp Open Dataset.",
+    "Classifier circularity, divergence score is both an input feature and a component of the proxy label.",
+    "Geographic scope limited to Arizona restaurants. Findings may not generalize.",
+    "Pre-COVID and post-COVID dynamics are mixed in the corpus.",
+    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used.",
+    "Anchor receipt, generated before full pipeline run. evidence.topic_outlier_pct, evidence.llm_few_shot_agreement_rate, and evidence.xgboost_mean_suspicion_score are provisional. Re-running run_pipeline.py replaces this receipt with the full-pipeline result."
+  ],
+  "dual_hash": {
+    "sha256": "79b9d241de1564a39261391e1d9ceb21ae18a481da2498f8b5bccfda68cbf943",
+    "blake3": "d3df7a3db294e1603111a7a01d93dd091144e052bf0ede9ca4a3ad0a1754e750"
+  }
+}
