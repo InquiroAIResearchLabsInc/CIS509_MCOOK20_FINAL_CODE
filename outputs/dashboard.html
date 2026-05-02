@@ -61,14 +61,12 @@
 <header class="hero py-8 px-6">
   <div class="max-w-6xl mx-auto">
     <div class="flex items-center gap-4 mb-2">
-      <span class="mono text-3xl font-bold" style="color: var(--asu-gold)">TABHS</span>
-      <span class="text-sm uppercase tracking-wider" style="color: var(--asu-gold)">CIS 509, ASU W. P. Carey</span>
+      <span class="mono text-3xl font-bold" style="color: var(--asu-gold)">Yelp Arizona RestaurantReceipt Dashboard</span>
     </div>
-    <h1 class="text-2xl font-light mb-3">Trust-Adjusted Business Health Score, Arizona restaurants</h1>
+    <h1 class="text-2xl font-light mb-3">Trust-Adjusted Business Health Score for Arizona Restaurants</h1>
     <p class="text-sm opacity-90 max-w-3xl">
-      Per-business scoring with cryptographically signed JSON receipts. Click any row to inspect
-      its receipt: inputs, evidence, model lineage, dual hash. Click <span class="mono">Verify</span>
-      to recompute SHA-256 client-side.
+      Per-business scoring with cryptographically receipts. 
+      Click any row to inspect its receipt: inputs, evidence, model lineage, dual hash. 
     </p>
   </div>
 </header>
@@ -98,12 +96,10 @@
   <!-- Top 10 table -->
   <section class="mb-8">
     <h2 class="text-lg font-semibold mb-3" style="color: var(--asu-gold)">
-      Top 10 most-manipulated businesses
+      Top 10 Most-Manipulated Restaurant Reviews
     </h2>
     <p class="text-sm mb-4" style="color: var(--text-mute)">
-      Ranked by manipulation delta, defined as (raw Yelp rating) minus (TABHS-adjusted rating).
-      Positive delta means the raw rating is inflated relative to the text-evidence-adjusted rating.
-    </p>
+      Ranked by manipulation delta, defined as (raw Yelp rating) minus (TABHS-adjusted rating)</p>
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead class="text-xs uppercase tracking-wider">
@@ -125,7 +121,7 @@
   <!-- Receipt detail -->
   <section class="mb-8">
     <h2 class="text-lg font-semibold mb-3" style="color: var(--asu-gold)">
-      Receipt detail
+      Receipt Detail
       <span class="ml-2 text-sm font-normal mono" id="receipt-id" style="color: var(--text-mute)">click a row above</span>
     </h2>
     <div class="flex gap-2 mb-3" id="receipt-actions" style="display: none;">
@@ -150,7 +146,7 @@
     </p>
     <p>
       <span class="mono">No receipt, not real. No test, not shipped. No gate, not alive.</span>
-      Built per CLAUDEME v5.0.
+      Built per Inquiro AI Research Labs CLAUDME standards.
     </p>
   </footer>
 
