@@ -1,0 +1,52 @@
+{
+  "schema_version": "tabhs-v1.0",
+  "tenant_id": "cis509-mcook20",
+  "business_id": "rLMRRaLhgxH2cU2XuJf_BQ",
+  "computed_at": "2026-05-02T18:03:35.620967Z",
+  "input": {
+    "review_count": 124,
+    "date_range": [
+      "2020-01-01",
+      "2022-01-14"
+    ],
+    "data_source": "yelp_open_dataset_arizona_restaurants_subset"
+  },
+  "scores": {
+    "raw_yelp_rating": 4.145,
+    "tabhs_adjusted_rating": 4.364,
+    "manipulation_delta": -0.219,
+    "suspicious_review_pct": 8.06
+  },
+  "evidence": {
+    "vader_mean_divergence": 0.3132,
+    "topic_outlier_pct": 1.0,
+    "llm_few_shot_agreement_rate": null,
+    "xgboost_mean_suspicion_score": 0.077
+  },
+  "models": {
+    "sentiment": {
+      "name": "VADER + Llama-3.3-70B-Versatile (few-shot)",
+      "version": "vader-3.3.2 + groq-llama-3.3-70b"
+    },
+    "topic": {
+      "name": "BERTopic + all-MiniLM-L6-v2",
+      "version": "bertopic-0.16.4 + sbert-2.7"
+    },
+    "classifier": {
+      "name": "XGBoost binary",
+      "version": "xgboost-2.1.2",
+      "label_proxy": "sentiment_star_divergence > 1.0"
+    }
+  },
+  "limitations": [
+    "Suspicion labels are a heuristic proxy. No ground truth fake review labels exist in the Yelp Open Dataset.",
+    "Classifier circularity, divergence score is both an input feature and a component of the proxy label.",
+    "Geographic scope limited to Arizona restaurants. Findings may not generalize.",
+    "Pre-COVID and post-COVID dynamics are mixed in the corpus.",
+    "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used."
+  ],
+  "dual_hash": {
+    "sha256": "9504ab128771e60b3c150a00f14e86a337f6e9bb266d37c6d3f2a90eeb4e15cc",
+    "blake3": "434ee2ec58222accb37dd1f5b75d3f6a495b007cc78a8965fd8e0b66fa6d3fad"
+  }
+}

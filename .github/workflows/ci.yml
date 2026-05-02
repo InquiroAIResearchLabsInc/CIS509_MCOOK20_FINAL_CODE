@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    name: Smoke tests + 1k pipeline run
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps for smoke + pipeline
+        run: |
+          python -m pip install --upgrade pip
+          # Install the deps the smoke + 1k pipeline path actually uses.
+          # Skipping bertopic/sentence-transformers/umap/hdbscan keeps CI fast,
+          # the pipeline gracefully skips topics when --skip-topics is set.
+          pip install \
+            pandas==2.2.3 numpy==1.26.4 scikit-learn==1.5.2 matplotlib==3.9.2 \
+            xgboost==2.1.2 vaderSentiment==3.3.2 blake3==0.4.1 \
+            python-dotenv==1.0.1 pytest==8.3.3 pytest-cov==5.0.0 \
+            nbformat==5.10.4
+
+      - name: Pytest smoke suite
+        run: PYTHONPATH=. pytest tests/ -v
+
+      - name: Run pipeline on 1k sample
+        run: PYTHONPATH=. python run_pipeline.py --sample 1000 --skip-llm --skip-topics
+
+      - name: Verify all committed receipts dual-hash
+        run: |
+          PYTHONPATH=. python - <<'PYEOF'
+          import json, sys
+          from pathlib import Path
+          from src.receipts import verify_receipt
+          paths = sorted(Path("outputs/receipts").glob("*.json"))
+          if not paths:
+              sys.exit("No committed receipts found, expected at least 5 anchors.")
+          failed = []
+          for p in paths:
+              if not verify_receipt(json.loads(p.read_text())):
+                  failed.append(p.name)
+          if failed:
+              print("FAIL:", failed[:5])
+              sys.exit(1)
+          print(f"PASS: all {len(paths)} receipts verified")
+          PYEOF
+
+      - name: Validate dashboard.html has data inlined
+        run: |
+          test -s outputs/dashboard.html || { echo "dashboard.html missing"; exit 1; }
+          grep -q "TABHS_DATA" outputs/dashboard.html || { echo "TABHS_DATA placeholder unexpanded"; exit 1; }
+          ! grep -q "__TABHS_DATA__" outputs/dashboard.html || { echo "TABHS_DATA placeholder NOT expanded"; exit 1; }
+          echo "dashboard.html is populated"
+
+  notebook-validate:
+    name: Notebooks parse via nbformat
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install nbformat
+        run: pip install nbformat==5.10.4
+
+      - name: Validate all 5 active notebooks parse
+        run: |
+          python - <<'PYEOF'
+          import nbformat, sys
+          from pathlib import Path
+          paths = sorted(Path("notebooks").glob("0*.ipynb"))
+          if len(paths) != 5:
+              sys.exit(f"Expected 5 active notebooks, found {len(paths)}")
+          for p in paths:
+              try:
+                  nb = nbformat.read(p, as_version=4)
+                  cells = len(nb.cells)
+                  print(f"  {p.name}: {cells} cells")
+              except Exception as e:
+                  sys.exit(f"FAIL parsing {p.name}: {e}")
+          print(f"PASS: {len(paths)} notebooks parse cleanly")
+          PYEOF
