@@ -2,7 +2,7 @@
   "schema_version": "tabhs-v1.0",
   "tenant_id": "cis509-mcook20",
   "business_id": "L1TzHZ8OXfVXTfyzidstzg",
-  "computed_at": "2026-05-02T18:38:54.667439Z",
+  "computed_at": "2026-05-02T23:16:57.068470Z",
   "input": {
     "review_count": 255,
     "date_range": [
@@ -46,7 +46,7 @@
     "Account-level signals are excluded per professor guidance, only restaurant_reviews_az.csv is used."
   ],
   "dual_hash": {
-    "sha256": "3d8385a1db2e07cec7863bfb0f6ef5f45fe2e1d760b0846fa58872a3b9175a94",
-    "blake3": "86c2c960253865c1138285e09b1823858dde43734b2af334ae7b7bd5841b54fd"
+    "sha256": "8c2ceedace171e567fb19c15e0a0da60aed05d9f214bcc3b581db9f4a6c5468a",
+    "blake3": "4a309de15e64de429e26d810242718773a6b4f260367e92e6e93c1371b7f70d2"
   }
 }
