@@ -5,6 +5,10 @@
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb"
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -23,12 +27,13 @@
       }
     }
   },
-  "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt",
+  "onCreateCommand": "bash .devcontainer/install-base.sh",
   "postAttachCommand": {
-    "preview": "echo 'Run: python run_pipeline.py --sample 100 --skip-llm'"
+    "welcome": "bash .devcontainer/welcome.sh"
   },
   "forwardPorts": [],
   "remoteEnv": {
-    "PYTHONPATH": "${containerWorkspaceFolder}"
+    "PYTHONPATH": "${containerWorkspaceFolder}",
+    "PIP_DISABLE_PIP_VERSION_CHECK": "1"
   }
 }

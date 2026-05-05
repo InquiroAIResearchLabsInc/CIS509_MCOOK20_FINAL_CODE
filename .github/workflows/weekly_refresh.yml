@@ -25,12 +25,17 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Install full dep set (pipeline + LLM optional)
+      - name: Install lean deps (no torch, --skip-topics path)
+        # Weekly refresh passes --skip-topics, so the heavy ML stack is not
+        # needed. Lean install is ~30s vs ~5min for the full requirements.txt.
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements-base.txt
 
       - name: Run pipeline on a 50-business random sample
+        # GROQ_API_KEY is OPTIONAL. If unset, LLMClient falls back to the
+        # cached predictions in outputs/llm_agreement.csv (or no-ops cleanly).
+        # Set it as a repo secret only if you want live LLM refreshes.
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |

@@ -5,7 +5,7 @@ The strategy doc requires five smoke checks (lines 435-441):
   2. receipts.compute_dual_hash({"a": 1}) returns valid sha256+blake3  [Phase 2]
   3. receipts.build_receipt() produces valid schema                    [Phase 2]
   4. Sample receipts in outputs/receipts/ validate against schema      [Phase 2]
-  5. run_pipeline.py --sample 100 --skip-llm completes without error   [Phase 4]
+  5. run_pipeline.py --sample 100 --skip-llm --skip-topics completes   [Phase 4]
 
 T+2h gate covers item 1. Items 2-5 are scaffolded as skipped tests until
 their modules land.
@@ -159,14 +159,16 @@ def test_committed_sample_receipts_validate() -> None:
     reason="run_pipeline.py lands in Phase 4a",
 )
 def test_pipeline_runs_on_100_sample_skip_llm() -> None:
-    """Smoke-runs the CLI end-to-end on a 100-row sample with --skip-llm.
+    """Smoke-runs the CLI end-to-end on a 100-row sample.
 
-    This is the strategy-doc T+48h gate test. Lives here because pytest is
-    the unified entry for all gates.
+    Passes both --skip-llm and --skip-topics so the lean CI install
+    (no torch / bertopic / sentence-transformers) is sufficient. This is
+    the strategy-doc T+48h gate test. Lives here because pytest is the
+    unified entry for all gates.
     """
     import subprocess
     result = subprocess.run(
-        ["python", "run_pipeline.py", "--sample", "100", "--skip-llm"],
+        ["python", "run_pipeline.py", "--sample", "100", "--skip-llm", "--skip-topics"],
         cwd=config.REPO_ROOT,
         capture_output=True,
         text=True,

@@ -1,0 +1,32 @@
+name: Codespaces prebuild trigger
+
+# This workflow exists to *document* the prebuild — actual prebuild scheduling
+# is configured in the GitHub UI under:
+#   Settings → Codespaces → Prebuild configurations → Add configuration
+# pointing at this branch (main) and the .devcontainer/ directory.
+#
+# When the prebuild runs (on push to main, on devcontainer changes), it
+# executes onCreateCommand from devcontainer.json (install-base.sh) and
+# bakes the result into a snapshot. New Codespaces start in ~30s instead
+# of ~10min because pip install is already done.
+#
+# This file is a no-op CI gate that just keeps the prebuild config in sync
+# with the .devcontainer/ files via path filtering: when these files change,
+# the prebuild needs a manual rebuild via the UI.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".devcontainer/**"
+      - "requirements-base.txt"
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Devcontainer config changed. If Codespaces prebuilds are"
+          echo "enabled, GitHub will automatically rebuild the snapshot."
+          echo "Settings → Codespaces → Prebuild configurations to verify."

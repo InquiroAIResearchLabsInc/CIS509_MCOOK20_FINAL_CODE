@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>TABHS Dashboard, Trust-Adjusted Business Health Score</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="TABHS, Trust-Adjusted Business Health Score for Arizona restaurants. CIS 509 final project, ASU W. P. Carey.">
+<meta name="theme-color" content="#8C1D40">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TABHS">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
 <script src="https://cdn.tailwindcss.com"></script>
 <!-- Client-side verification uses Web Crypto SHA-256, no extra deps -->
 <style>
@@ -17,10 +25,15 @@
     --pass:       #3FB950;
     --fail:       #F85149;
   }
+  html { -webkit-text-size-adjust: 100%; }
   body {
     background: var(--bg-dark);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    /* Respect iOS safe areas (notch, home indicator) */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
   .mono { font-family: "IBM Plex Mono", Consolas, "Courier New", monospace; }
   .hero {
@@ -33,7 +46,8 @@
     border-radius: 6px;
     text-align: center;
   }
-  .row-hover:hover { background: #21262D; cursor: pointer; }
+  .row-hover { cursor: pointer; }
+  .row-hover:hover { background: #21262D; }
   .row-active {
     background: #1f2733 !important;
     border-left: 3px solid var(--asu-gold);
@@ -44,6 +58,7 @@
     font-family: "IBM Plex Mono", Consolas, monospace;
     font-size: 0.82rem;
     line-height: 1.5;
+    -webkit-overflow-scrolling: touch;
   }
   .verified { color: var(--pass); }
   .unverified { color: var(--fail); }
@@ -56,44 +71,67 @@
   table thead { background: var(--bg-mid); }
   table tbody tr { border-bottom: 1px solid #21262D; }
   table th, table td { text-align: center !important; }
+  /* Touch-friendly buttons, 44px min target per Apple HIG / Material */
+  .btn-touch {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    user-select: none;
+  }
+  /* Make table rows feel clickable, not draggable, on touch */
+  .row-hover td { touch-action: manipulation; }
+  /* Horizontal scroll containers should momentum-scroll on iOS */
+  .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Mobile breakpoint: collapse low-priority columns, tighten chrome */
+  @media (max-width: 640px) {
+    /* Hide the rank "#" column and the "Reviews" count column on phones,
+       keeps the table readable without horizontal scroll for the four
+       columns the professor actually grades on. */
+    .col-hide-sm { display: none; }
+    table th, table td { padding: 0.625rem 0.5rem !important; font-size: 0.8rem; }
+    .receipt-panel { font-size: 0.72rem; padding: 0.75rem !important; }
+    .hero h1 { font-size: 1.125rem; line-height: 1.4; }
+    .hero p { font-size: 0.8rem; }
+  }
 </style>
 </head>
 <body>
 
-<header class="hero py-8 px-6">
+<header class="hero py-6 sm:py-8 px-4 sm:px-6">
   <div class="max-w-6xl mx-auto">
-    <div class="flex items-center gap-4 mb-2">
-      <span class="mono text-3xl font-bold" style="color: var(--asu-gold)">TABHS</span>
-      <span class="text-sm uppercase tracking-wider" style="color: var(--asu-gold)">CIS 509, ASU W. P. Carey</span>
+    <div class="flex items-center gap-3 sm:gap-4 mb-2 flex-wrap">
+      <span class="mono text-2xl sm:text-3xl font-bold" style="color: var(--asu-gold)">TABHS</span>
+      <span class="text-xs sm:text-sm uppercase tracking-wider" style="color: var(--asu-gold)">CIS 509, ASU W. P. Carey</span>
     </div>
-    <h1 class="text-2xl font-light mb-3">Trust-Adjusted Business Health Score, Arizona restaurants</h1>
-    <p class="text-sm opacity-90 max-w-3xl">
-      Per-business scoring with cryptographically signed JSON receipts. Click any row to inspect
-      its receipt: inputs, evidence, model lineage, dual hash. Click <span class="mono">Verify</span>
+    <h1 class="text-xl sm:text-2xl font-light mb-2 sm:mb-3">Trust-Adjusted Business Health Score, Arizona restaurants</h1>
+    <p class="text-xs sm:text-sm opacity-90 max-w-3xl">
+      Per-business scoring with cryptographically signed JSON receipts. Tap any row to inspect
+      its receipt: inputs, evidence, model lineage, dual hash. Tap <span class="mono">Verify</span>
       to recompute SHA-256 client-side.
     </p>
   </div>
 </header>
 
-<main class="max-w-6xl mx-auto px-6 py-8">
+<main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
   <!-- Stats row -->
-  <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-    <div class="stat-card p-4">
+  <section class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+    <div class="stat-card p-3 sm:p-4">
       <div class="text-xs uppercase tracking-wider" style="color: var(--text-mute)">Reviews analyzed</div>
-      <div class="mono text-2xl mt-1" id="stat-reviews">—</div>
+      <div class="mono text-xl sm:text-2xl mt-1" id="stat-reviews">—</div>
     </div>
-    <div class="stat-card p-4">
+    <div class="stat-card p-3 sm:p-4">
       <div class="text-xs uppercase tracking-wider" style="color: var(--text-mute)">Businesses scored</div>
-      <div class="mono text-2xl mt-1" id="stat-businesses">—</div>
+      <div class="mono text-xl sm:text-2xl mt-1" id="stat-businesses">—</div>
     </div>
-    <div class="stat-card p-4">
+    <div class="stat-card p-3 sm:p-4">
       <div class="text-xs uppercase tracking-wider" style="color: var(--text-mute)">Receipts on disk</div>
-      <div class="mono text-2xl mt-1" id="stat-receipts">—</div>
+      <div class="mono text-xl sm:text-2xl mt-1" id="stat-receipts">—</div>
     </div>
-    <div class="stat-card p-4">
+    <div class="stat-card p-3 sm:p-4">
       <div class="text-xs uppercase tracking-wider" style="color: var(--text-mute)">Headline divergence</div>
-      <div class="mono text-2xl mt-1" id="stat-headline">—</div>
+      <div class="mono text-xl sm:text-2xl mt-1" id="stat-headline">—</div>
     </div>
   </section>
 
@@ -106,13 +144,13 @@
       Ranked by manipulation delta, defined as (raw Yelp rating) minus (TABHS-adjusted rating).
       Positive delta means the raw rating is inflated relative to the text-evidence-adjusted rating.
     </p>
-    <div class="overflow-x-auto">
+    <div class="scroll-x">
       <table class="w-full text-sm">
         <thead class="text-xs uppercase tracking-wider">
           <tr>
-            <th class="text-left p-3">#</th>
+            <th class="text-left p-3 col-hide-sm">#</th>
             <th class="text-left p-3">Business</th>
-            <th class="text-right p-3">Reviews</th>
+            <th class="text-right p-3 col-hide-sm">Reviews</th>
             <th class="text-right p-3">Raw</th>
             <th class="text-right p-3">Adjusted</th>
             <th class="text-right p-3">Delta</th>
@@ -130,12 +168,12 @@
       Receipt detail
       <span class="ml-2 text-sm font-normal mono" id="receipt-id" style="color: var(--text-mute)">click a row above</span>
     </h2>
-    <div class="flex gap-2 mb-3" id="receipt-actions" style="display: none;">
-      <button onclick="verifyReceipt()" class="px-3 py-1.5 text-sm rounded mono"
+    <div class="flex gap-2 mb-3 flex-wrap items-center" id="receipt-actions" style="display: none;">
+      <button onclick="verifyReceipt()" class="btn-touch px-4 py-2 text-sm rounded mono font-semibold"
               style="background: var(--asu-gold); color: var(--bg-dark);">
         Verify SHA-256
       </button>
-      <span id="verify-result" class="text-sm self-center"></span>
+      <span id="verify-result" class="text-sm"></span>
     </div>
     <pre class="receipt-panel rounded p-4 overflow-x-auto" id="receipt-panel">No receipt selected.</pre>
   </section>
@@ -183,9 +221,9 @@
       tr.className = 'row-hover';
       tr.dataset.bid = row.business_id;
       tr.innerHTML = `
-        <td class="p-3 mono">${i + 1}</td>
-        <td class="p-3 mono">${row.business_id}</td>
-        <td class="p-3 text-right mono">${row.review_count}</td>
+        <td class="p-3 mono col-hide-sm">${i + 1}</td>
+        <td class="p-3 mono" style="word-break: break-all;">${row.business_id}</td>
+        <td class="p-3 text-right mono col-hide-sm">${row.review_count}</td>
         <td class="p-3 text-right mono">${fmt(row.raw_avg_stars, 2)}</td>
         <td class="p-3 text-right mono">${fmt(row.tabhs_adjusted_stars, 2)}</td>
         <td class="p-3 text-right mono ${deltaClass}">${row.manipulation_delta > 0 ? '+' : ''}${fmt(row.manipulation_delta, 3)}</td>
@@ -229,6 +267,10 @@
     document.getElementById('verify-result').textContent = '';
     const json = JSON.stringify(r, null, 2);
     document.getElementById('receipt-panel').innerHTML = syntaxHighlight(json);
+    // On phones the receipt sits below the fold, scroll it into view on tap.
+    if (window.matchMedia('(max-width: 640px)').matches) {
+      document.getElementById('receipt-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   async function sha256(text) {
