@@ -14,7 +14,10 @@
 
 Built on 48,147 raw rows, 47,035 after dropping Excel-corrupted IDs, across 1,864 restaurants. Every business analyzed produces a JSON receipt signed with SHA-256 plus BLAKE3.
 
+[![View dashboard](https://img.shields.io/badge/View_dashboard-8C1D40?style=for-the-badge&logo=github&logoColor=FFC627)](https://inquiroairesearchlabsinc.github.io/cis509_mcook20_final_code/)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/InquiroAIResearchLabsInc/CIS509_MCOOK20_FINAL_CODE)
+
+**One click, mobile-friendly.** The dashboard above is a static page on GitHub Pages, optimized for iPhone, Android, and desktop. No install, no Codespace, no waiting.
 
 </div>
 
@@ -26,15 +29,36 @@ A receipts-native NLP pipeline that scores Arizona restaurants on the gap betwee
 
 Open the dashboard, click any business, see the receipt that justifies its score.
 
-## Three-line setup, on the professor's machine
+## How to view this, ranked by friction
+
+| | What | Time | Best for |
+|---|---|---|---|
+| 🟢 | **[Click → Live dashboard](https://inquiroairesearchlabsinc.github.io/cis509_mcook20_final_code/)** | ~1s | Phone, tablet, any browser. Grading. |
+| 🟡 | **Click → Open in Codespaces** (badge above) | ~30s with prebuilds, ~2min cold | Re-running the fast pipeline path |
+| ⚪ | `git clone` + local Python | ~1min | Power users who want the full ML stack |
+
+The live dashboard is a self-contained HTML page hosted on GitHub Pages, mobile-optimized for iOS and Android, with all 30+ committed receipts inlined. Click any business row to inspect its receipt; click **Verify SHA-256** to recompute the hash client-side using Web Crypto.
+
+For the Codespace, the lean base (~30s install) covers the fast pipeline:
+
+```bash
+python run_pipeline.py --sample 100 --skip-llm --skip-topics
+```
+
+The heavy ML stack (BERTopic, sentence-transformers, CPU-only PyTorch) is opt-in with `bash .devcontainer/install-ml.sh` so you don't pay ~1.5 GB of CUDA wheels you don't need.
+
+For local install:
 
 ```bash
 git clone https://github.com/InquiroAIResearchLabsInc/CIS509_MCOOK20_FINAL_CODE.git tabhs
 cd tabhs
-python run_pipeline.py --sample 100 --skip-llm
+pip install -r requirements-base.txt           # lean
+python run_pipeline.py --sample 100 --skip-llm --skip-topics
+# Optional, for full topic modeling:
+pip install --extra-index-url https://download.pytorch.org/whl/cpu \
+    torch==2.4.1 bertopic==0.16.4 umap-learn==0.5.6 \
+    hdbscan==0.8.40 sentence-transformers==3.2.1
 ```
-
-Or click **Open in GitHub Codespaces** above. The dev container builds in about 60 seconds, opens `run_pipeline.py` in the editor, and previews `outputs/dashboard.html`. The dashboard renders with five committed sample receipts even before the pipeline runs.
 
 ## What the pipeline does
 
