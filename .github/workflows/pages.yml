@@ -1,11 +1,18 @@
 name: Publish dashboard to GitHub Pages
 
+# Canonical Pages-via-Actions pattern: run on every push to main, plus a
+# manual trigger. The path filter is intentionally absent so any change
+# to the repo (docs, receipts, code) re-publishes the dashboard.
+#
+# We do NOT run on feature branches because the github-pages environment
+# is created with a default policy that only allows the repo's default
+# branch to deploy. Trying to deploy from claude/** fails with
+# "Branch ... is not allowed to deploy to github-pages due to environment
+# protection rules". Merging to main is the supported path.
+
 on:
   push:
     branches: [main]
-    paths:
-      - "outputs/**"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -29,6 +36,7 @@ jobs:
 
       - name: Stage site
         run: |
+          set -euo pipefail
           mkdir -p _site
           # Pages serves _site/ at the repo URL; dashboard.html becomes index.html
           # so the professor lands on the dashboard with one click.
@@ -37,17 +45,24 @@ jobs:
           cp outputs/top_10_manipulated.csv _site/top_10_manipulated.csv
           cp -r outputs/figures _site/figures
           cp -r outputs/receipts _site/receipts
-          # Tell crawlers + clients this is a static, mobile-ready site
+          # .nojekyll prevents Pages from running Jekyll, which would skip
+          # files starting with _ and break some asset paths.
+          touch _site/.nojekyll
           cat > _site/robots.txt <<'EOF'
           User-agent: *
           Allow: /
           EOF
+          echo "site staged: $(find _site -type f | wc -l) files"
 
       - name: Verify dashboard is populated
         run: |
+          set -euo pipefail
           test -s _site/index.html
           grep -q "TABHS_DATA" _site/index.html
-          ! grep -q "__TABHS_DATA__" _site/index.html
+          if grep -q "__TABHS_DATA__" _site/index.html; then
+            echo "FAIL: TABHS_DATA placeholder was not expanded"
+            exit 1
+          fi
           echo "dashboard OK, $(wc -c < _site/index.html) bytes"
 
       - uses: actions/configure-pages@v5
