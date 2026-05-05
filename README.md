@@ -12,55 +12,45 @@
 
 ### **10.3% of Arizona restaurant reviews show sentiment that does not match their star rating** (4,838 of 47,035 cleaned reviews, divergence > 1.0).
 
-Built on 48,147 raw rows, 47,035 after dropping Excel-corrupted IDs, across 1,864 restaurants. Every business analyzed produces a JSON receipt signed with SHA-256 plus BLAKE3.
+48,147 raw rows, 47,035 after dropping Excel-corrupted IDs, 1,864 restaurants. Every business produces a JSON receipt signed with SHA-256 plus BLAKE3.
 
-[![View dashboard](https://img.shields.io/badge/View_dashboard-8C1D40?style=for-the-badge&logo=github&logoColor=FFC627)](https://inquiroairesearchlabsinc.github.io/cis509_mcook20_final_code/)
+[![View dashboard](https://img.shields.io/badge/View_dashboard-8C1D40?style=for-the-badge&logo=github&logoColor=FFC627)](https://inquiroairesearchlabsinc.github.io/CIS509_MCOOK20_FINAL_CODE/)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/InquiroAIResearchLabsInc/CIS509_MCOOK20_FINAL_CODE)
-
-**One click, mobile-friendly.** The dashboard above is a static page on GitHub Pages, optimized for iPhone, Android, and desktop. No install, no Codespace, no waiting.
 
 </div>
 
 ---
 
-## What you are looking at
+## What this is
 
-A receipts-native NLP pipeline that scores Arizona restaurants on the gap between their headline Yelp rating and a trust-adjusted rating computed from sentiment-star divergence, BERTopic outliers, LLM authenticity verdicts, and an XGBoost classifier. The output is per-business, signed, and reproducible.
+A receipts-native NLP pipeline that scores Arizona restaurants on the gap between their headline Yelp rating and a trust-adjusted rating computed from sentiment-star divergence, BERTopic outliers, LLM authenticity verdicts, and an XGBoost classifier. Output is per-business, signed, and reproducible.
 
-Open the dashboard, click any business, see the receipt that justifies its score.
+## Run it
 
-## How to view this, ranked by friction
+| Path | Time | What you get |
+|---|---|---|
+| **[Live dashboard](https://inquiroairesearchlabsinc.github.io/CIS509_MCOOK20_FINAL_CODE/)** | ~1s | Mobile + desktop, no install |
+| **Codespaces** (badge above) | ~30s with prebuilds | Lean Python env, fast pipeline |
+| `git clone` + local | ~1min | Full ML stack on your machine |
 
-| | What | Time | Best for |
-|---|---|---|---|
-| 🟢 | **[Click → Live dashboard](https://inquiroairesearchlabsinc.github.io/cis509_mcook20_final_code/)** | ~1s | Phone, tablet, any browser. Grading. |
-| 🟡 | **Click → Open in Codespaces** (badge above) | ~30s with prebuilds, ~2min cold | Re-running the fast pipeline path |
-| ⚪ | `git clone` + local Python | ~1min | Power users who want the full ML stack |
-
-The live dashboard is a self-contained HTML page hosted on GitHub Pages, mobile-optimized for iOS and Android, with all 30+ committed receipts inlined. Click any business row to inspect its receipt; click **Verify SHA-256** to recompute the hash client-side using Web Crypto.
-
-For the Codespace, the lean base (~30s install) covers the fast pipeline:
+Codespace and local fast path:
 
 ```bash
+pip install -r requirements-base.txt
 python run_pipeline.py --sample 100 --skip-llm --skip-topics
 ```
 
-The heavy ML stack (BERTopic, sentence-transformers, CPU-only PyTorch) is opt-in with `bash .devcontainer/install-ml.sh` so you don't pay ~1.5 GB of CUDA wheels you don't need.
-
-For local install:
+Heavy ML stack (BERTopic, sentence-transformers, CPU-only PyTorch) is opt-in:
 
 ```bash
-git clone https://github.com/InquiroAIResearchLabsInc/CIS509_MCOOK20_FINAL_CODE.git tabhs
-cd tabhs
-pip install -r requirements-base.txt           # lean
-python run_pipeline.py --sample 100 --skip-llm --skip-topics
-# Optional, for full topic modeling:
+bash .devcontainer/install-ml.sh
+# or, locally:
 pip install --extra-index-url https://download.pytorch.org/whl/cpu \
     torch==2.4.1 bertopic==0.16.4 umap-learn==0.5.6 \
     hdbscan==0.8.40 sentence-transformers==3.2.1
 ```
 
-## What the pipeline does
+## Pipeline
 
 | Step | Method | Output |
 |---|---|---|
@@ -74,31 +64,22 @@ pip install --extra-index-url https://download.pytorch.org/whl/cpu \
 
 The classifier label is a heuristic proxy. There is no ground-truth fake-review label in the Yelp Open Dataset. Every receipt discloses this in its `limitations` field. See `RECEIPT_SCHEMA.md`.
 
-## Repo layout
+## Layout
 
 ```
 tabhs/
-├── README.md                       this file
-├── CLAUDEME.md                     execution standards (Inquiro v5.0)
-├── PROJECT_BRIEF.md                what this project is
-├── PROFESSOR_FEEDBACK.md           Prof. Liu's constraints, applied
-├── RUBRIC.md                       grading rubric mapped to deliverables
-├── PRIOR_WORK_INVENTORY.md         what came from LA2/LA4/LA5/LA6/EDA
-├── RECEIPT_SCHEMA.md               JSON receipt structure and dual-hash protocol
-├── Tabhs cis509 build strategy.md  build manifest
-├── LICENSE                         MIT
-├── run_pipeline.py                 CLI entry, --sample N --skip-llm
-├── pyproject.toml / requirements.txt  pinned deps
+├── run_pipeline.py                 CLI entry
+├── requirements-base.txt           lean install
+├── requirements.txt                full install (lean + ML stack)
 ├── .devcontainer/                  Codespaces config, Python 3.11
-├── .github/workflows/              CI on push, weekly refresh of top 10
-├── data/restaurant_reviews_az.csv  the dataset, 48,147 reviews
+├── .github/workflows/              CI, Pages deploy, weekly refresh
+├── data/restaurant_reviews_az.csv  48,147 reviews
 ├── notebooks/
-│   ├── 01_eda.ipynb                EDA, six plots, 10.3% finding
+│   ├── 01_eda.ipynb                six plots, 10.3% finding
 │   ├── 02_vader_sentiment.ipynb    VADER divergence
 │   ├── 03_bertopic.ipynb           BERTopic 80 to 15
 │   ├── 04_llm_methods.ipynb        Groq zero/few/multi-model
-│   ├── 05_xgboost_tabhs.ipynb      classifier + TABHS scoring (net new)
-│   └── _prior_work/                LA1, LA2, LA3, LA4, LA5, LA6, ProjectEDA, archived
+│   └── 05_xgboost_tabhs.ipynb      classifier + TABHS scoring
 ├── src/
 │   ├── data_loader.py              single load_reviews() entry
 │   ├── receipts.py                 dual-hash sign, schema validation
@@ -109,31 +90,24 @@ tabhs/
 ├── outputs/
 │   ├── receipts/                   per-business signed JSON
 │   ├── figures/                    PNG plots
-│   ├── dashboard.html              static, ASU-themed
+│   ├── dashboard.html              static, mobile-optimized
 │   └── top_10_manipulated.csv      refreshed weekly by Actions
 ├── slides/TABHS_CLEAN.pptx         final presentation
 └── tests/test_smoke.py             pytest smoke suite
 ```
 
-## What it does not do
+## Baselines
 
-- Not real-time fraud detection
-- Not a kill switch over Yelp ratings
-- Not a recreation of any prior lab assignment from scratch
-- Not production RNA infrastructure, this is the academic application of the receipts-native pattern
-
-## Comparison baselines from prior work
-
-Prior CIS 509 assignments on the same dataset establish reference points:
+Prior CIS 509 assignments on this dataset:
 
 - **LA2, SVM TF-IDF:** 95.70% accuracy on 5-star vs 1-star binary sentiment (44,093 rows after dropping 3-star)
 - **LA4, LSTM with trainable GloVe:** 95.15% on the same task
 
-This project does not chase those headline numbers. It builds a different artifact, the per-business signed receipt, on top of methods that include sentiment, topic modeling, and LLM agreement.
+This project builds a different artifact (per-business signed receipt) on top of sentiment, topic modeling, and LLM agreement. Headline numbers are not the goal.
 
 ## Receipts
 
-Every business receipt is signed with SHA-256 and BLAKE3 over a canonical JSON serialization. The `dual_hash` field stores both hashes as separate hex strings. Verification recomputes the canonical bytes and re-hashes. Single-hash match is a verification failure, both must match.
+SHA-256 plus BLAKE3 over canonical JSON. Verification recomputes both hashes; both must match.
 
 ```json
 {
@@ -153,13 +127,13 @@ Full schema in `RECEIPT_SCHEMA.md`.
 
 ## MCP server
 
-A minimal MCP server exposes the receipt store to any MCP-compatible client. Three tools:
+Three tools over the receipt store:
 
-- `query_receipts(filters)` returns receipts matching `business_id`, `manipulation_delta` threshold, or date range
-- `verify_chain(start_id, end_id)` recomputes dual-hash on every receipt in the range, halts on first failure
-- `get_topology(business_id)` returns the meta-loop classification (open, hybrid, closed) for the business under the receipts-pattern audit lens
+- `query_receipts(filters)` — match by `business_id`, `manipulation_delta` threshold, or date range
+- `verify_chain(start_id, end_id)` — recompute dual-hash on every receipt in range, halt on first failure
+- `get_topology(business_id)` — meta-loop classification (open / hybrid / closed)
 
-Attach by adding to your client's MCP config:
+Attach via:
 
 ```json
 {
@@ -173,8 +147,6 @@ Attach by adding to your client's MCP config:
 }
 ```
 
-Then ask the client in plain English which businesses have manipulation delta over 1.0 and get verified receipts back.
-
 ## Citation
 
 ```bibtex
@@ -182,14 +154,10 @@ Then ask the client in plain English which businesses have manipulation delta ov
   author = {Cook, Matthew},
   title  = {TABHS, Trust-Adjusted Business Health Score for Arizona Restaurants},
   year   = {2026},
-  note   = {CIS 509 final project, ASU W. P. Carey, advised by Prof. Xiao Liu}
+  note   = {CIS 509 final project, ASU W. P. Carey}
 }
 ```
 
 ## License
 
-MIT. See `LICENSE`. The Yelp Open Dataset is included under Yelp's academic-use terms, see `data/README.md`.
-
----
-
-<sub>No receipt, not real. No test, not shipped. No gate, not alive. Built per `CLAUDEME.md` v5.0.</sub>
+MIT. See `LICENSE`. Yelp Open Dataset under Yelp's academic-use terms, see `data/README.md`.
